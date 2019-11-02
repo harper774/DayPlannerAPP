@@ -1,0 +1,14 @@
+html{
+	height:100%;
+}
+
+body{
+    margin:0px;
+    padding:0px;
+    width:100%;
+	color:white;
+    font-family: 'Ubuntu', sans-serif;
+	background-image: url(../pic/bg2.jpeg);
+	height:100%;
+}
+
