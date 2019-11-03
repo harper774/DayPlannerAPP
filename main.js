@@ -4,13 +4,12 @@ $("#currentDay").text(moment().format('dddd')+', '+moment().format("MMM Do YYYY"
 //display timeblocks
 for (var i = 0; i<9; i++){
 	var timeBlockEl = $("<div>");
-	timeBlockEl.attr("id", i);
 	timeBlockEl.attr("class", "row");
 	$(".container").append(timeBlockEl);
 }
 
 //adding three parts into each timeblocks
-$.each($(".row"), function(){
+$.each($(".row"), function(i){
 	// console.log($(this));
 	var timerEl = $("<div>");
 	timerEl.attr("class", "time-block hour");
@@ -18,12 +17,16 @@ $.each($(".row"), function(){
 
 	var userInput = $("<textarea>");
 	userInput.attr({
-		"class":"description"
+		"class":"description",
+		"id":"text"+i
 	});
 	$(this).append(userInput);
 
 	var saveBtn = $("<button>");
-	saveBtn.attr("class", "saveBtn");
+	saveBtn.attr({
+		"class":"saveBtn",
+		"id":"btn"+i
+	});
 	$(this).append(saveBtn);
 });
 
@@ -76,4 +79,27 @@ $(".row").each(function(){
 	}
 });
 
+//save button
+$(".saveBtn").click(function(){
+	var i = $(this).attr("id");
+	var value = $(this).parent(".row").children(".description").val().trim();
+	window.localStorage.setItem(i,value);
+});
 
+//displaying texts
+$("textarea").on("keyup",function(){
+	var i = $(this).parent(".row").children(".saveBtn").attr("id");
+	var value = $(this).val().trim();
+	window.localStorage.setItem(i,value);
+	// $(this).text(window.localStorage.getItem(i));
+});
+
+//
+$(document).ready(function(){
+	$("textarea").each(function(){
+		var i = $(this).parent(".row").children(".saveBtn").attr("id");
+		var value = $(this).val().trim();
+		// window.localStorage.setItem(i,value);
+		$(this).text(window.localStorage.getItem(i));
+	});
+});
