@@ -94,12 +94,14 @@ $("textarea").on("keyup",function(){
 	// $(this).text(window.localStorage.getItem(i));
 });
 
-//
+//set the color to reflect the time
 $(document).ready(function(){
-	$("textarea").each(function(){
-		var i = $(this).parent(".row").children(".saveBtn").attr("id");
-		var value = $(this).val().trim();
-		// window.localStorage.setItem(i,value);
-		$(this).text(window.localStorage.getItem(i));
-	});
+	setInterval(function(){
+		$("textarea").each(function(){
+			var i = $(this).parent(".row").children(".saveBtn").attr("id");
+			var value = $(this).val().trim();
+			// window.localStorage.setItem(i,value);
+			$(this).text(window.localStorage.getItem(i));
+		});
+	},1000);	
 });
