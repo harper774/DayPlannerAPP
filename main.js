@@ -49,36 +49,6 @@ $(".time-block").each(function(i,element){
 	}
 });
 
-//get the current time frm moment.js
-var currentTime = parseInt(moment().format('HH'));
-
-//changing the color of textarea
-//according to the current time
-$(".row").each(function(){
-	//change all time into 24H
-	var time = parseInt($(this).children(".time-block").text())
-	if(time<6){
-		time +=12;
-	}
-
-	var inputArea = $(this).children("textarea");
-	if(time<currentTime){
-		inputArea.addClass("past");
-		inputArea.removeClass("present");
-		inputArea.removeClass("future");
-	}
-	else if(time === currentTime){
-		inputArea.addClass("present");
-		inputArea.removeClass("past");
-		inputArea.removeClass("future");	
-	}
-	else{
-		inputArea.addClass("future");
-		inputArea.removeClass("present");
-		inputArea.removeClass("past");
-	}
-});
-
 //save button
 $(".saveBtn").click(function(){
 	var i = $(this).attr("id");
@@ -94,14 +64,63 @@ $("textarea").on("keyup",function(){
 	// $(this).text(window.localStorage.getItem(i));
 });
 
-//set the color to reflect the time
+$("textarea").each(function(){
+	var i = $(this).parent(".row").children(".saveBtn").attr("id");
+	var value = $(this).val().trim();
+	// window.localStorage.setItem(i,value);
+	$(this).text(window.localStorage.getItem(i));
+});
+
+//get the geolocation of user
+var latitude;
+var longitude;
+function locationSuccess(position) {
+	latitude = position.coords.latitude;
+	longitude = position.coords.longitude;
+	// var altitude = position.coords.altitude;
+	// var accuracy = position.coords.accuracy;
+	// var altitudeAccuracy = position.coords.altitudeAccuracy;
+	// var heading = position.coords.height;
+	// var speed = position.coords.speed;
+	// var timestamp = position.timestamp;
+}
+
+function locationError(error) {
+	var code = error.code;
+	var message = error.message;
+}
+
+navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
+
 $(document).ready(function(){
 	setInterval(function(){
-		$("textarea").each(function(){
-			var i = $(this).parent(".row").children(".saveBtn").attr("id");
-			var value = $(this).val().trim();
-			// window.localStorage.setItem(i,value);
-			$(this).text(window.localStorage.getItem(i));
+		//get the current time frm moment.js
+		var currentTime = parseInt(moment().format('HH'));
+		//changing the color of textarea
+		//according to the current time
+		$(".row").each(function(){
+			//change all time into 24H
+			var time = parseInt($(this).children(".time-block").text())
+			if(time<6){
+				time +=12;
+			}
+
+			var inputArea = $(this).children("textarea");
+			if(time<currentTime){
+				inputArea.addClass("past");
+				inputArea.removeClass("present");
+				inputArea.removeClass("future");
+			}
+			else if(time === currentTime){
+				inputArea.addClass("present");
+				inputArea.removeClass("past");
+				inputArea.removeClass("future");	
+			}
+			else{
+				inputArea.addClass("future");
+				inputArea.removeClass("present");
+				inputArea.removeClass("past");
+			}
 		});
-	},1000);	
+	},100);
 });
